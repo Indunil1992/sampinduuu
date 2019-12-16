@@ -23,7 +23,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "sampinduuu/lambda.js",
-        "code": "let SL_REDIS = require('slappforge-sdk-redis');\nlet clusterManager = require('./ClusterManager');\nconst redis = new SL_REDIS.Redis(clusterManager);\n\nexports.handler = async (event) => {\n    // You must always quit the redis client after it's used\n    redis.type({\n        clusterIdentifier: 'clster',\n        params: ['Key1']\n    }, function (error, response, redisClient) {\n        if (error) {\n            callback(error);\n        } else {\n            //redisClient.quit();\n        }\n    });\n\n    return { \"message\": \"Successfully executed\" };\n};",
+        "code": "let SL_REDIS = require('slappforge-sdk-redis');\nlet clusterManager = require('./ClusterManager');\nconst redis = new SL_REDIS.Redis(clusterManager);\n\nexports.handler = async (event) => {\n    // You must always quit the redis client after it's used\n    redis.type({\n        clusterIdentifier: 'clster',\n        params: ['Key1']\n    }, function (error, response, redisClient) {\n        if (error) {\n            callback(error);\n        } else {\n            //redisClient.quit();\n        }\n    });\n\n    return { \"message\": \"Successfully executed 123\" };\n};",
         "config": {
           "runtime": "nodejs10.x",
           "handler": "handler",
@@ -31,7 +31,16 @@
           "memory": 128,
           "layers": []
         },
-        "triggers": []
+        "triggers": [],
+        "testCases": {
+          "2cb2e038-5f96-4a9e-96ac-4dff5307ca05": {
+            "id": "2cb2e038-5f96-4a9e-96ac-4dff5307ca05",
+            "name": "Test event",
+            "functionId": "06183dff-c634-4c16-94f8-bc1cc0653565",
+            "event": "{\"key1\": \"value1\", \"key2\": \"value2\", \"key3\": \"value3\"}",
+            "eventTemplate": "hello-world"
+          }
+        }
       },
       "e8263f92-9241-41b4-9b19-830088946168": {
         "id": "e8263f92-9241-41b4-9b19-830088946168",
@@ -58,9 +67,12 @@
           "clusterConfig": {
             "engineType": "redis",
             "clusterSpec": {
-              "instanceFamily": "t2",
-              "nodeTypeClass": "cache.t2.small",
+              "instanceFamily": "r5",
+              "deployedInstanceFamily": "t2",
+              "nodeTypeClass": "cache.r5.xlarge",
+              "deployedNodeTypeClass": "cache.t2.small",
               "engineVersion": "5.0.4",
+              "deployedEngineVersion": "5.0.4",
               "clusterModeEnabled": false,
               "autoFailoverEnabled": true,
               "numOfShards": 3,
@@ -85,19 +97,18 @@
                 "subnetIPv4CIDR": "10.0.0.0/20"
               }
             },
-            "host": "",
-            "doesExist": false,
-            "alreadyDeployed": false,
+            "host": "clster.y6jiqb.ng.0001.use1.cache.amazonaws.com",
+            "doesExist": true,
+            "alreadyDeployed": true,
             "redisClient": "",
             "external": false
           },
           "clusterResources": [],
-          "editMode": false,
+          "editMode": true,
           "enableInject": true,
           "isGlobalEditMode": false,
           "isClusterSelectionValid": true,
           "isNewFromGlobal": false,
-          "mode": 0,
           "operation": {
             "str": "REDIS_TYPE",
             "operation": "type",
@@ -108,6 +119,7 @@
               "displayName": "KEYS"
             }
           },
+          "mode": 0,
           "params": [],
           "projectRegion": "us-east-1",
           "reusableMode": false,
@@ -152,7 +164,7 @@
     "projectRegion": "us-east-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1576496610804
+    "lastSave": 1576497327603
   },
   "VCS_STATE": {
     "provider": "GitHub",
