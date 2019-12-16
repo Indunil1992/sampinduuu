@@ -23,7 +23,7 @@
         "children": [],
         "isRemovable": true,
         "filePath": "sampinduuu/lambda.js",
-        "code": "let SL_REDIS = require('slappforge-sdk-redis');\nlet clusterManager = require('./ClusterManager');\nconst redis = new SL_REDIS.Redis(clusterManager);\n\nexports.handler = async (event) => {\n    // You must always quit the redis client after it's used\n    redis.type({\n        clusterIdentifier: 'clster',\n        params: ['Key1']\n    }, function (error, response, redisClient) {\n        if (error) {\n            callback(error);\n        } else {\n            //redisClient.quit();\n        }\n    });\n\n    return { \"message\": \"Successfully executed 123\" };\n};",
+        "code": "let AWS = require('aws-sdk');\nconst rekognition = new AWS.Rekognition();\n\nexports.handler = async (event) => {\n    rekognition.detectText({\n        Image: {\n            S3Object: {\n                Bucket: \"test.indunil1\",\n                Name: \"obama.jpg\"\n            }\n        }\n    }).promise()\n        .then(data => {\n            console.log(\"dataaa\");\n            // your code goes here\n        })\n        .catch(err => {\n                        console.log(\"dataaa\");\n\n            // error handling goes here\n        });\n\n    return { \"message\": \"Successfully executed 123\" };\n};",
         "config": {
           "runtime": "nodejs10.x",
           "handler": "handler",
@@ -60,75 +60,10 @@
     ],
     "currentFileId": "06183dff-c634-4c16-94f8-bc1cc0653565",
     "resources": {
-      "redis-clster": {
-        "name": "redis-clster",
-        "type": "Redis",
-        "config": {
-          "clusterConfig": {
-            "engineType": "redis",
-            "clusterSpec": {
-              "instanceFamily": "r5",
-              "deployedInstanceFamily": "t2",
-              "nodeTypeClass": "cache.r5.xlarge",
-              "deployedNodeTypeClass": "cache.t2.small",
-              "engineVersion": "5.0.4",
-              "deployedEngineVersion": "5.0.4",
-              "clusterModeEnabled": false,
-              "autoFailoverEnabled": true,
-              "numOfShards": 3,
-              "numOfReplicas": 2
-            },
-            "clusterSetting": {
-              "clusterName": "clster",
-              "clusterDescription": "test",
-              "port": 6379
-            },
-            "vpcSpec": {
-              "vpcType": "EXISTING",
-              "existingVPC": {
-                "vpcID": "vpc-ee1ef195",
-                "subNetID": "subnet-993076a6",
-                "securityGroupID": "sg-00c0e38b3ca019399"
-              },
-              "newVPC": {
-                "vpcName": "",
-                "vpcIPv4CIDR": "10.0.0.0/16",
-                "subnetName": "",
-                "subnetIPv4CIDR": "10.0.0.0/20"
-              }
-            },
-            "host": "clster.y6jiqb.ng.0001.use1.cache.amazonaws.com",
-            "doesExist": true,
-            "alreadyDeployed": true,
-            "redisClient": "",
-            "external": false
-          },
-          "clusterResources": [],
-          "editMode": true,
-          "enableInject": true,
-          "isGlobalEditMode": false,
-          "isClusterSelectionValid": true,
-          "isNewFromGlobal": false,
-          "operation": {
-            "str": "REDIS_TYPE",
-            "operation": "type",
-            "displayName": "TYPE",
-            "type": {
-              "str": "REDIS_KEYS",
-              "type": "keys",
-              "displayName": "KEYS"
-            }
-          },
-          "mode": 0,
-          "params": [],
-          "projectRegion": "us-east-1",
-          "reusableMode": false,
-          "showOperations": true,
-          "validator": {
-            "validatableFields": {},
-            "validity": true
-          }
-        }
+      "rekognitionResource": {
+        "name": "rekognitionResource",
+        "type": "Rekognition",
+        "config": {}
       }
     },
     "customTemplate": {
@@ -153,6 +88,13 @@
           "version": "0.0.3",
           "dev": false,
           "notRemovable": false
+        },
+        "aws-sdk": {
+          "name": "aws-sdk",
+          "language": "javascript",
+          "version": "2.176.0",
+          "dev": true,
+          "notRemovable": false
         }
       }
     }
@@ -164,7 +106,7 @@
     "projectRegion": "us-east-1",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1576497327603
+    "lastSave": 1576498470810
   },
   "VCS_STATE": {
     "provider": "GitHub",

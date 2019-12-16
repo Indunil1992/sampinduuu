@@ -4,5 +4,7 @@
   "dependencies": {
     "slappforge-sdk-redis": "0.0.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "aws-sdk": "2.176.0"
+  }
 }

@@ -1,19 +1,24 @@
-let SL_REDIS = require('slappforge-sdk-redis');
-let clusterManager = require('./ClusterManager');
-const redis = new SL_REDIS.Redis(clusterManager);
+let AWS = require('aws-sdk');
+const rekognition = new AWS.Rekognition();
 
 exports.handler = async (event) => {
-    // You must always quit the redis client after it's used
-    redis.type({
-        clusterIdentifier: 'clster',
-        params: ['Key1']
-    }, function (error, response, redisClient) {
-        if (error) {
-            callback(error);
-        } else {
-            //redisClient.quit();
+    rekognition.detectText({
+        Image: {
+            S3Object: {
+                Bucket: "test.indunil1",
+                Name: "obama.jpg"
+            }
         }
-    });
+    }).promise()
+        .then(data => {
+            console.log("dataaa");
+            // your code goes here
+        })
+        .catch(err => {
+                        console.log("dataaa");
+
+            // error handling goes here
+        });
 
     return { "message": "Successfully executed 123" };
 };
